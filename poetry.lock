@@ -766,6 +766,49 @@ tox = ">=4,<5"
 testing = ["black", "devpi-process", "flake8 (>=6,<7)", "mypy", "pytest (>=7,<8)", "pytest-cov (>=3,<4)", "pytest-mock (>=3,<4)", "pytest-randomly (>=3)"]
 
 [[package]]
+name = "types-pillow"
+version = "9.5.0.4"
+description = "Typing stubs for Pillow"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-Pillow-9.5.0.4.tar.gz", hash = "sha256:f1b6af47abd151847ee25911ffeba784899bc7dc7f9eba8ca6a5aac522b012ef"},
+    {file = "types_Pillow-9.5.0.4-py3-none-any.whl", hash = "sha256:69427d9fa4320ff6e30f00fb9c0dd71185dc0a16de4757774220104759483466"},
+]
+
+[[package]]
+name = "types-pyautogui"
+version = "0.9.3.6"
+description = "Typing stubs for PyAutoGUI"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-PyAutoGUI-0.9.3.6.tar.gz", hash = "sha256:cef539d4ccaf657ad150515db02250521c1756bc625473c15be0401928a13571"},
+    {file = "types_PyAutoGUI-0.9.3.6-py3-none-any.whl", hash = "sha256:2071ecedc511a633de1b7e890e4048068e89735f7a3e087087b2692a6be39df4"},
+]
+
+[package.dependencies]
+types-Pillow = "*"
+types-PyScreeze = "*"
+
+[[package]]
+name = "types-pyscreeze"
+version = "0.1.0.8"
+description = "Typing stubs for PyScreeze"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-PyScreeze-0.1.0.8.tar.gz", hash = "sha256:5986f1c0a9ace1d6215294e0ad72ef7f9e4dc619a88edeb2e433284a980f9516"},
+    {file = "types_PyScreeze-0.1.0.8-py3-none-any.whl", hash = "sha256:69e44f80de5a250bb8c7becd924bb46a40e6a50b8e0ccbf1c4aabe726f3acb00"},
+]
+
+[package.dependencies]
+types-Pillow = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.6.2"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -801,4 +844,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.3)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = '^3.8.1'
-content-hash = "04d95809469f86268d959b8879fe3ff61ab78ffb1ebc25718e829cc76435d6fc"
+content-hash = "3d1a6963c75b30e07f28318b230917683bb23a3aeaad3df035a144089f2d84da"
