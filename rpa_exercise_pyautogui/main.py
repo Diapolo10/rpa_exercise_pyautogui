@@ -1,49 +1,40 @@
+"""Python code that draws squares on a canvas, and scribbles on them until they're unrecognisable."""
+
 import random
 import subprocess
 import time
-from pathlib import Path
+from collections.abc import Generator
+from contextlib import contextmanager
 
 import pyautogui
-from pygetwindow import getWindowsWithTitle, Window  # type: ignore[import]
+from pygetwindow import Window, getWindowsWithTitle  # type: ignore[import]
 
 from rpa_exercise_pyautogui.config import (
-    CANVAS_OFFSET_TOP_LEFT,
-    DEFAULT_CANVAS_HEIGHT,
-    DEFAULT_CANVAS_WIDTH,
+    BOTTOM_RIGHT_PNG,
+    CANVAS_EXECUTABLE,
+    CONFIDENCE,
+    SQUARE_SCREENSHOT,
     SQUARE_SIDE_LENGTH,
+    TOP_LEFT_PNG,
+    WINDOW_DEFAULT_HEIGHT,
+    WINDOW_DEFAULT_WIDTH,
     WINDOW_TITLE,
 )
 
 
-SQUARE_SCREENSHOT = Path(__file__).parent / 'images' / 'square.png'  # TODO: Swap to importlib.resources
-
-subprocess.Popen(['mspaint'])
-
-time.sleep(1)
-
-
-PAINT_WINDOW: Window = getWindowsWithTitle(WINDOW_TITLE)[0]
-CANVAS_AREA: tuple[pyautogui.Point, pyautogui.Point] = (
-    pyautogui.Point(
-        PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_LEFT.x,
-        PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_LEFT.y,
-    ),
-    pyautogui.Point(
-        PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_LEFT.x + DEFAULT_CANVAS_WIDTH,
-        PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_LEFT.y + DEFAULT_CANVAS_HEIGHT,
-    ),
-)
-
-PAINT_WINDOW.activate()
-PAINT_WINDOW.restore()
-pyautogui.moveTo(*PAINT_WINDOW.topleft)
-# pyautogui.screenshot("./test.png", region=(PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_LEFT.x, PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_LEFT.y, DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT))
+@contextmanager
+def run_subprocess(*args, **kwargs) -> Generator[subprocess.Popen, None, None]:  # noqa: ANN002,ANN003
+    process = subprocess.Popen(*args, **kwargs)  # noqa: S603
+    try:
+        yield process
+    finally:
+        process.kill()
 
 
 def draw_square(top_left: pyautogui.Point | tuple[int, int], side_length: int = SQUARE_SIDE_LENGTH) -> None:
     """
     Draws a square at a desired point on the canvas
-    
+
     NOTE: Does not perform any boundary checking.
     """
 
@@ -54,10 +45,12 @@ def draw_square(top_left: pyautogui.Point | tuple[int, int], side_length: int = 
     pyautogui.drag(yOffset=-side_length)
 
 
-def random_square_coordinates(count: int, canvas_area: tuple[pyautogui.Point, pyautogui.Point], square_side_length: int) -> list[pyautogui.Point]:
+def random_square_coordinates(count: int,
+                              canvas_area: tuple[pyautogui.Point, pyautogui.Point],
+                              square_side_length: int = SQUARE_SIDE_LENGTH) -> list[pyautogui.Point]:
     """
     Returns the desired number of starting points for non-overlapping squares in random positions
-    
+
     NOTE: The function may halt if the canvas does not have enough room for the desired number of squares.
     """
 
@@ -74,23 +67,118 @@ def random_square_coordinates(count: int, canvas_area: tuple[pyautogui.Point, py
                 for bad_y in range(y_coord-square_side_length, y_coord+square_side_length+1):
                     invalid_points.add((bad_x, bad_y))
 
-    print(points)
-    # print(invalid_points)
-
     return points
 
 
-print(PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_LEFT.x)
-print(PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_LEFT.y)
-print(PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_LEFT.x + DEFAULT_CANVAS_WIDTH)
-print(PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_LEFT.y + DEFAULT_CANVAS_HEIGHT)
+def draw_random_line(canvas_area: tuple[pyautogui.Point, pyautogui.Point]) -> None:
+    """Draw a random line on the canvas"""
 
-for point in random_square_coordinates(random.randrange(2, 6), CANVAS_AREA, SQUARE_SIDE_LENGTH):
-    draw_square(point)
+    start_x = random.randrange(int(canvas_area[0].x), int(canvas_area[1].x))
+    start_y = random.randrange(int(canvas_area[0].y), int(canvas_area[1].y))
+    stop_x = random.randrange(int(canvas_area[0].x), int(canvas_area[1].x))
+    stop_y = random.randrange(int(canvas_area[0].y), int(canvas_area[1].y))
+
+    pyautogui.moveTo(
+        x=start_x,
+        y=start_y,
+    )
+    pyautogui.dragTo(
+        x=stop_x,
+        y=stop_y,
+    )
 
 
-# pyautogui.moveTo(*PAINT_WINDOW.topleft)
-# pyautogui.moveTo(PAINT_WINDOW.topleft.x + OFFSET_TOP_RIGHT.x + (DEFAULT_CANVAS_WIDTH // 2), PAINT_WINDOW.topleft.y + OFFSET_TOP_RIGHT.y + (DEFAULT_CANVAS_HEIGHT // 2), duration=1)
-# draw_square(pyautogui.Point(PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_RIGHT.x + (DEFAULT_CANVAS_WIDTH // 2), PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_RIGHT.y + (DEFAULT_CANVAS_HEIGHT // 2)))
-# draw_square(pyautogui.Point(PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_RIGHT.x + (DEFAULT_CANVAS_WIDTH // 4), PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_RIGHT.y + (DEFAULT_CANVAS_HEIGHT // 2)))
-# draw_square(pyautogui.Point(PAINT_WINDOW.topleft.x + CANVAS_OFFSET_TOP_RIGHT.x + DEFAULT_CANVAS_WIDTH - (DEFAULT_CANVAS_WIDTH // 4), PAINT_WINDOW.topleft.y + CANVAS_OFFSET_TOP_RIGHT.y + (DEFAULT_CANVAS_HEIGHT // 2)))
+def count_squares(canvas_area: tuple[pyautogui.Point, pyautogui.Point]) -> int:
+    """Use computer vision to detect squares from the canvas, and count them"""
+
+    squares = list(pyautogui.locateAllOnScreen(
+        str(SQUARE_SCREENSHOT),
+        region=(int(canvas_area[0].x),
+                int(canvas_area[0].y),
+                int(canvas_area[1].x),
+                int(canvas_area[1].y)),
+        grayscale=True,
+        confidence=CONFIDENCE,
+    ))
+
+    return len(squares)
+
+
+def main() -> None:
+    """Main program"""
+
+    with run_subprocess([CANVAS_EXECUTABLE]):
+
+        time.sleep(1)
+
+        paint_window: Window = getWindowsWithTitle(WINDOW_TITLE)[0]
+
+        paint_window.activate()
+        paint_window.restore()
+        paint_window.width = WINDOW_DEFAULT_WIDTH
+        paint_window.height = WINDOW_DEFAULT_HEIGHT
+
+        pyautogui.moveTo(*paint_window.topleft)
+
+        canvas_bottom_right = pyautogui.center(pyautogui.locateOnScreen(
+            str(BOTTOM_RIGHT_PNG),
+            region=(int(paint_window.topleft.x),
+                    int(paint_window.topleft.y),
+                    int(paint_window.bottomright.x),
+                    int(paint_window.bottomright.x)),
+            grayscale=True,
+        ))  # type: ignore[arg-type]
+
+        canvas_top_left = pyautogui.center(pyautogui.locateOnScreen(
+            str(TOP_LEFT_PNG),
+            region=(int(paint_window.topleft.x),
+                    int(paint_window.topleft.y),
+                    int(paint_window.bottomright.x),
+                    int(paint_window.bottomright.x)),
+            grayscale=True,
+        ))  # type: ignore[arg-type]
+
+
+        canvas_area: tuple[pyautogui.Point, pyautogui.Point] = (
+            pyautogui.Point(
+                canvas_top_left.x,
+                canvas_top_left.y,
+            ),
+            pyautogui.Point(
+                canvas_bottom_right.x,
+                canvas_bottom_right.y,
+            ),
+        )
+
+        squares = random_square_coordinates(
+            random.randrange(2, 6),
+            canvas_area,
+            SQUARE_SIDE_LENGTH,
+        )
+
+        for point in squares:
+            draw_square(point)
+
+        pyautogui.screenshot(
+            SQUARE_SCREENSHOT,
+            region=(
+                int(squares[0].x),
+                int(squares[0].y),
+                SQUARE_SIDE_LENGTH,
+                SQUARE_SIDE_LENGTH,
+            ),
+        )
+
+        try:
+            while (count := count_squares(canvas_area)) > 0:
+                print(f"Squares found: {count}")  # noqa: T201
+                draw_random_line(canvas_area)
+
+            print("No squares detected, shutting down...")  # noqa: T201
+
+        finally:
+            SQUARE_SCREENSHOT.unlink()
+
+
+if __name__ == '__main__':
+    main()
