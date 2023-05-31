@@ -1,3 +1,3 @@
-# python-poetry-template
+# rpa_exercise_pyautogui
 
-A template Poetry project structure.
+Python code that draws squares on a canvas, and scribbles on them until they're unrecognisable.

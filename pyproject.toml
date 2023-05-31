@@ -13,9 +13,9 @@ omit = [
 
 
 [tool.poetry]
-name = 'project_name'
+name = 'rpa_exercise_pyautogui'
 version = '0.1.0'
-description = "A template Poetry project structure."
+description = "Python code that draws squares on a canvas, and scribbles on them until they're unrecognisable."
 
 authors = ["Lari Liuhamo <lari.liuhamo+pypi@gmail.com>",]
 maintainers = ["Lari Liuhamo <lari.liuhamo+pypi@gmail.com>",]
@@ -24,9 +24,9 @@ include = ['CHANGELOG.md', 'LICENSE',]
 license = 'MIT'
 readme = 'README.md'
 
-homepage = 'https://pypi.org/project/project_name/'
-repository = 'https://github.com/Diapolo10/project_name'
-documentation = 'https://github.com/Diapolo10/project_name/tree/main/docs'
+homepage = 'https://pypi.org/project/rpa_exercise_pyautogui/'
+repository = 'https://github.com/Diapolo10/rpa_exercise_pyautogui'
+documentation = 'https://github.com/Diapolo10/rpa_exercise_pyautogui/tree/main/docs'
 
 keywords = [
     'python3',
@@ -34,7 +34,7 @@ keywords = [
 classifiers = [
     'Development Status :: 3 - Alpha',
     'License :: OSI Approved :: MIT License',
-    'Operating System :: OS Independent',
+    'Operating System :: Windows',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
@@ -48,10 +48,11 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = '^3.8.1'
+pyautogui = '^0.9.54'
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = '*'
+mypy = '^1.3.0'
 
 
 [tool.poetry.group.linters]
@@ -59,7 +60,7 @@ optional = true
 
 
 [tool.poetry.group.linters.dependencies]
-ruff = '*'
+ruff = '^0.0.270'
 
 
 [tool.poetry.group.tests]
@@ -67,16 +68,15 @@ optional = true
 
 
 [tool.poetry.group.tests.dependencies]
-coverage = {version = '*', extras = ['toml',]}
-pytest = '*'
-pytest-cov = '*'
-tox = '*'
-tox-gh-actions = '*'
+pytest = '^7.3.1'
+pytest-cov = '^4.1.0'
+tox = '^4.5.2'
+tox-gh-actions = '^3.1.1'
 
 
 [tool.poetry.urls]
-"Tracker" = 'https://github.com/Diapolo10/project_name/issues'
-"Changelog" = 'https://github.com/Diapolo10/project_name/blob/main/CHANGELOG.md'
+"Tracker" = 'https://github.com/Diapolo10/rpa_exercise_pyautogui/issues'
+"Changelog" = 'https://github.com/Diapolo10/rpa_exercise_pyautogui/blob/main/CHANGELOG.md'
 
 
 [tool.pytest.ini_options]
