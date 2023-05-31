@@ -1,5 +1,5 @@
 
-# rpa_exercise_pyautogui Changelog
+# RPA Exercise – PyAutoGUI Drawing Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -50,19 +50,37 @@ Lorem Ipsum dolor sit amet.
 <!--
 _______________________________________________________________________________
 
-## [0.1.1] - YYYY-MM-DD
+## [1.0.0] - 2023-05-31
 
-In-progress update goes here.
+This release implements all the required functionality, as described in the
+assignment requirements. The code does not use hard-coded coordinates,
+PyAutoGUI is used wherever possible, and most corner cases have been handled.
 
 ### Added
 
-- Stuff
+- Added all required functionality
 
 ### Changed
 
 - Updated localisation files
 
 -->
+
+_______________________________________________________________________________
+
+## [1.0.0] - 2023-05-31
+
+This release implements all the required functionality, as described in the
+assignment requirements. The code does not use hard-coded coordinates,
+PyAutoGUI is used wherever possible, and most corner cases have been handled.
+
+### Added
+
+- Added all required functionality
+
+### Changed
+
+- Updated localisation files
 
 _______________________________________________________________________________
 

@@ -14,7 +14,7 @@ omit = [
 
 [tool.poetry]
 name = 'rpa_exercise_pyautogui'
-version = '0.1.0'
+version = '1.0.0'
 description = "Python code that draws squares on a canvas, and scribbles on them until they're unrecognisable."
 
 authors = ["Lari Liuhamo <lari.liuhamo+pypi@gmail.com>",]
@@ -32,16 +32,20 @@ keywords = [
     'python3',
 ]
 classifiers = [
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Education',
+    'Intended Audience :: End Users/Desktop',
     'License :: OSI Approved :: MIT License',
-    'Operating System :: Windows',
+    'Operating System :: Microsoft :: Windows :: Windows 8.1',
+    'Operating System :: Microsoft :: Windows :: Windows 10',
+    'Operating System :: Microsoft :: Windows :: Windows 11',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: Implementation :: CPython',
-    'Programming Language :: Python :: Implementation :: PyPy',
+    'Topic :: Artistic Software',
     'Typing :: Typed',
 ]
 
