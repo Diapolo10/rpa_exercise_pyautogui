@@ -31,6 +31,5 @@ This project is licensed under the MIT license - see the [`LICENSE`][license]-fi
 
 [pyproject.toml]: ./pyproject.toml
 [installation]: ./docs/installation.md
-[running unit tests]: ./docs/running_unit_tests.md
 [changelog]: ./CHANGELOG.md
 [license]: ./LICENSE
