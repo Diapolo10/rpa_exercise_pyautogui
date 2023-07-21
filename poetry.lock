@@ -803,13 +803,13 @@ files = [
 
 [[package]]
 name = "types-pyautogui"
-version = "0.9.3.6"
+version = "0.9.3.7"
 description = "Typing stubs for PyAutoGUI"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-PyAutoGUI-0.9.3.6.tar.gz", hash = "sha256:cef539d4ccaf657ad150515db02250521c1756bc625473c15be0401928a13571"},
-    {file = "types_PyAutoGUI-0.9.3.6-py3-none-any.whl", hash = "sha256:2071ecedc511a633de1b7e890e4048068e89735f7a3e087087b2692a6be39df4"},
+    {file = "types-PyAutoGUI-0.9.3.7.tar.gz", hash = "sha256:709fe897ec19d42373bda68f2675d568c38a8844315d4d2f48b6a369601d412b"},
+    {file = "types_PyAutoGUI-0.9.3.7-py3-none-any.whl", hash = "sha256:c0227b99c4e3ebc8b8cce587a05d8008b993225eaf0774de99692b2de7b9235b"},
 ]
 
 [package.dependencies]
@@ -864,4 +864,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "e3851ea63ac91b414fc52e848ec655ba7fbceb47f1dee9bbb39e2b0c06a98263"
+content-hash = "c1398f5707387cce6e2efdd77993c11193b998b9c924c86bcc45d75801add6a1"
