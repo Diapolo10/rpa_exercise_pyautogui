@@ -58,7 +58,7 @@ pygetwindow = '^0.0.9'
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = '^1.6.0'
+mypy = '^1.6.1'
 types-PyAutoGUI = '^0.9.3.7'
 
 
